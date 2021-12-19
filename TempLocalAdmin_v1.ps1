@@ -1,4 +1,26 @@
-﻿# Parameter for user
+<# 
+Author:  Rudy Bankson, rudybankson at gmail dot com, Twitter @physx51
+
+Purpose:
+This script is intended to promote a user (or group) to local administrator for a temporary duration. This script is best utilized in the
+"Scripts" / "Run Scripts" section of MECM (aka SCCM) as it allows you to remotely execute this script on a remote device. 
+
+Requirements:
+In order for the Teams notification to function, you must create a Teams Webhook and place your URI URL in this script. The Teams section of
+this script is located towards the bottom of this script and starts with "URI". For info on how to create a Teams Webhook, please see my
+blog post at https://www.get-itguy.com/2021/12/temp-local-admin-through-mecm-run-script.html. The device where this script executes must have
+internet access in order for the Teams Webhook notification to work. 
+
+Notes:
+If you need any help implementing this, please don't hesitate to reach out to me. I'm always happy to help others and am also thankful 
+for those that have done the same for me in the past. This script is a Frankenstein of some things I have wrote myself and some things I found online. 
+I probably had 20 tabs open in Edge by the time I was done with this project, each where I would pull a line of code here or there to make this master 
+piece. If you see something that you think you wrote, please let me know and I'll add you on the credits. I appologize for not keeping better 
+track... it's the ADHD. 
+#>
+
+
+# Parameter for user
 Param(
 [Parameter(Mandatory=$True)]
 [int]$Minutes,
@@ -61,5 +83,3 @@ Invoke-RestMethod @parameters
 $Message = $DomainAndUser+' was promoted as temporary local administrator expiring '+$Expires+'. This action was performed using the Scripts feature in MECM. Additional logging can be found in the MECM console under Monitoring\Overview\Script Status or Monitoring\Overview\System Status\Status Message Queries filtering by message ID 40806 and/or 40807.'
 New-EventLog -LogName Application -Source "Temp Local Admin"
 Write-EventLog -LogName Application -Source "Temp Local Admin" -EntryType Information -EventId 42 -Message $Message
-
-# Brought to you by Carls Jr
